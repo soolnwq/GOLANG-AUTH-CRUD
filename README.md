@@ -1,1 +1,1 @@
-﻿# Go Auth CRUD and Jwt Authentication
+﻿# Go CRUD and Jwt Authentication
