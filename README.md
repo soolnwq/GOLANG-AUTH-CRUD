@@ -1,1 +1,1 @@
-﻿# Go CRUD and Jwt Authentication
+﻿# Golang CRUD and Jwt Authentication
