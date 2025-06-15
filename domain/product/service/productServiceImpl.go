@@ -33,7 +33,7 @@ func (p *productServiceImpl) GetProduct(productID int) (*models.ProductResponse,
 		}
 		return nil, errs.NewUnexpectedError("unexpected error")
 	}
-	return mapper.ToResponse(product), nil
+	return mapper.ProductEntityToResponse(product), nil
 }
 
 func (p *productServiceImpl) GetProducts() ([]*models.ProductResponse, error) {
@@ -42,7 +42,7 @@ func (p *productServiceImpl) GetProducts() ([]*models.ProductResponse, error) {
 		zap.L().Error(err.Error())
 		return nil, errs.NewUnexpectedError("unexpected error")
 	}
-	return mapper.ToResponseList(*products), nil
+	return mapper.ProductEntityListToResponse(*products), nil
 }
 
 func (p *productServiceImpl) CreateProduct(productRequest *models.ProductRequest) (*models.ProductResponse, error) {
@@ -51,12 +51,12 @@ func (p *productServiceImpl) CreateProduct(productRequest *models.ProductRequest
 		return nil, errs.ParseValidationErrors(err)
 	}
 
-	product, err := p.productRepository.Insert(mapper.ToEntity(productRequest))
+	product, err := p.productRepository.Insert(mapper.ProdcutRequestToEntity(productRequest))
 	if err != nil {
 		zap.L().Error(err.Error())
 		return nil, errs.NewUnexpectedError("unexpected error")
 	}
-	return mapper.ToResponse(product), nil
+	return mapper.ProductEntityToResponse(product), nil
 }
 
 func (p *productServiceImpl) UpdateProduct(productID int, productRequest *models.ProductRequest) (*models.ProductResponse, error) {
@@ -64,7 +64,7 @@ func (p *productServiceImpl) UpdateProduct(productID int, productRequest *models
 		return nil, errs.ParseValidationErrors(err)
 	}
 
-	product, err := p.productRepository.UpdateByID(productID, mapper.ToEntity(productRequest))
+	product, err := p.productRepository.UpdateByID(productID, mapper.ProdcutRequestToEntity(productRequest))
 	if err != nil {
 		zap.L().Error(err.Error())
 		if errors.Is(err, sql.ErrNoRows) {
@@ -72,7 +72,7 @@ func (p *productServiceImpl) UpdateProduct(productID int, productRequest *models
 		}
 		return nil, errs.NewUnexpectedError("unexpected error")
 	}
-	return mapper.ToResponse(product), nil
+	return mapper.ProductEntityToResponse(product), nil
 }
 
 func (p *productServiceImpl) DeleteProduct(productID int) error {
