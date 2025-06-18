@@ -36,6 +36,10 @@ func NewValidationErrorItem(errors []ValidationErrorItem) *AppError {
 	return &AppError{Status: 422, Message: "validation error", Errors: errors}
 }
 
+func NewBadRequestError(message string) *AppError {
+	return &AppError{Status: 400, Message: message}
+}
+
 func HandleError(c *fiber.Ctx, err error) error {
 	switch e := err.(type) {
 	case *AppError:

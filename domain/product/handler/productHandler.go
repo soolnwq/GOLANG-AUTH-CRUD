@@ -28,7 +28,7 @@ func (p *productHandler) GetProduct(c *fiber.Ctx) error {
 func (p *productHandler) GetProducts(c *fiber.Ctx) error {
 	productID, err := c.ParamsInt("productID")
 	if err != nil {
-		return errs.HandleError(c, errs.NewAppError("invalid product id", 400))
+		return errs.HandleError(c, errs.NewBadRequestError("invalid product id"))
 	}
 
 	product, err := p.productService.GetProduct(productID)
@@ -43,7 +43,7 @@ func (p *productHandler) CreateProduct(c *fiber.Ctx) error {
 	var productRequest models.ProductRequest
 
 	if err := c.BodyParser(&productRequest); err != nil {
-		return errs.HandleError(c, errs.NewAppError(err.Error(), 400))
+		return errs.HandleError(c, errs.NewBadRequestError("invalid body json request"))
 	}
 
 	product, err := p.productService.CreateProduct(&productRequest)
@@ -60,13 +60,13 @@ func (p *productHandler) CreateProduct(c *fiber.Ctx) error {
 func (p *productHandler) UpdateProduct(c *fiber.Ctx) error {
 	productID, err := c.ParamsInt("productID")
 	if err != nil {
-		return errs.HandleError(c, errs.NewAppError("invalid product id", 400))
+		return errs.HandleError(c, errs.NewBadRequestError("invalid product id"))
 	}
 
 	var productRequest models.ProductRequest
 
 	if err := c.BodyParser(&productRequest); err != nil {
-		return errs.HandleError(c, errs.NewAppError(err.Error(), 400))
+		return errs.HandleError(c, errs.NewBadRequestError("invalid body json request"))
 	}
 
 	product, err := p.productService.UpdateProduct(productID, &productRequest)
@@ -83,7 +83,7 @@ func (p *productHandler) UpdateProduct(c *fiber.Ctx) error {
 func (p *productHandler) DeleteProduct(c *fiber.Ctx) error {
 	productID, err := c.ParamsInt("productID")
 	if err != nil {
-		return errs.HandleError(c, errs.NewAppError("invalid product id", 400))
+		return errs.HandleError(c, errs.NewBadRequestError("invalid product id"))
 	}
 
 	if err := p.productService.DeleteProduct(productID); err != nil {
