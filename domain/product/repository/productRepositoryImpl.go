@@ -46,12 +46,8 @@ func (r *productRepository) Insert(product *entities.Product) (*entities.Product
 		return nil, err
 	}
 
-	return &entities.Product{
-		ID:          int(lastProductID),
-		Name:        product.Name,
-		Description: product.Description,
-		Price:       product.Price,
-	}, nil
+	product.ID = int(lastProductID)
+	return product, nil
 }
 
 func (r *productRepository) UpdateByID(productID int, product *entities.Product) (*entities.Product, error) {
@@ -61,12 +57,7 @@ func (r *productRepository) UpdateByID(productID int, product *entities.Product)
 		return nil, err
 	}
 
-	return &entities.Product{
-		ID:          productID,
-		Name:        product.Name,
-		Description: product.Description,
-		Price:       product.Price,
-	}, nil
+	return product, nil
 }
 
 func (r *productRepository) DeleteByID(productID int) error {
