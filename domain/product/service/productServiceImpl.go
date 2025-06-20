@@ -31,7 +31,7 @@ func (p *productServiceImpl) GetProduct(productID int) (*models.ProductResponse,
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errs.NewNotFoundError("product not found")
 		}
-		return nil, errs.NewUnexpectedError("unexpected error")
+		return nil, errs.NewInternalError()
 	}
 	return mapper.ProductEntityToResponse(product), nil
 }
@@ -40,7 +40,7 @@ func (p *productServiceImpl) GetProducts() ([]*models.ProductResponse, error) {
 	products, err := p.productRepository.FindAll()
 	if err != nil {
 		zap.L().Error(err.Error())
-		return nil, errs.NewUnexpectedError("unexpected error")
+		return nil, errs.NewInternalError()
 	}
 	return mapper.ProductEntityListToResponse(*products), nil
 }
@@ -54,7 +54,7 @@ func (p *productServiceImpl) CreateProduct(productRequest *models.ProductRequest
 	product, err := p.productRepository.Insert(mapper.ProdcutRequestToEntity(productRequest))
 	if err != nil {
 		zap.L().Error(err.Error())
-		return nil, errs.NewUnexpectedError("unexpected error")
+		return nil, errs.NewInternalError()
 	}
 	return mapper.ProductEntityToResponse(product), nil
 }
@@ -70,7 +70,7 @@ func (p *productServiceImpl) UpdateProduct(productID int, productRequest *models
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, errs.NewNotFoundError("product not found")
 		}
-		return nil, errs.NewUnexpectedError("unexpected error")
+		return nil, errs.NewInternalError()
 	}
 	return mapper.ProductEntityToResponse(product), nil
 }
@@ -81,7 +81,7 @@ func (p *productServiceImpl) DeleteProduct(productID int) error {
 		if errors.Is(err, sql.ErrNoRows) {
 			return errs.NewNotFoundError("product not found")
 		}
-		return errs.NewUnexpectedError("unexpected error")
+		return errs.NewInternalError()
 	}
 	return nil
 }

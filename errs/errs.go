@@ -28,10 +28,6 @@ func NewNotFoundError(message string) *AppError {
 	return &AppError{Status: 404, Message: message}
 }
 
-func NewUnexpectedError(message string) *AppError {
-	return &AppError{Status: 500, Message: message}
-}
-
 func NewValidationErrorItem(errors []ValidationErrorItem) *AppError {
 	return &AppError{Status: 422, Message: "validation error", Errors: errors}
 }
@@ -40,12 +36,20 @@ func NewBadRequestError(message string) *AppError {
 	return &AppError{Status: 400, Message: message}
 }
 
+func NewInternalError() *AppError {
+	return &AppError{Status: 400, Message: "Internal Server Error"}
+}
+
+func NewUnautherizedError(message string) *AppError {
+	return &AppError{Status: 401, Message: message}
+}
+
 func HandleError(c *fiber.Ctx, err error) error {
 	switch e := err.(type) {
 	case *AppError:
 		return c.Status(e.Status).JSON(e)
 	default:
-		return c.Status(500).JSON(NewUnexpectedError(err.Error()))
+		return c.Status(500).JSON(NewInternalError())
 	}
 }
 
@@ -76,5 +80,5 @@ func ParseValidationErrors(err error) error {
 		}
 		return NewValidationErrorItem(details)
 	}
-	return NewUnexpectedError(err.Error())
+	return NewInternalError()
 }
