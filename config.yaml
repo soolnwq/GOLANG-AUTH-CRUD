@@ -7,3 +7,7 @@ db:
 
 server:
   port: 8000
+
+jwt:
+  access_secret: "secret"
+  refresh_secret: "refresh_secret"

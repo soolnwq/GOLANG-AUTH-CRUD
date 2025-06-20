@@ -20,6 +20,7 @@ func main() {
 
 	fiber := fiber.New()
 	routes.RegisterProductRoute(fiber)
+	routes.RegisterAuthRoute(fiber)
 	fiber.Listen(fmt.Sprintf(":%v", viper.GetString("server.port")))
 }
 
